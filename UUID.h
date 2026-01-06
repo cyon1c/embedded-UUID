@@ -10,12 +10,9 @@
 //
 // e.g.     20d24650-d900-e34f-de49-8964ab3eb46d
 
+#define UUID_LIB_VERSION         "0.2.1"
 
-#include "Arduino.h"
-#include "Printable.h"
-
-
-#define UUID_LIB_VERSION              (F("0.2.0"))
+#include <cstdint>
 
 //  TODO an enum?
 const uint8_t UUID_MODE_RANDOM   = 0;
@@ -27,13 +24,13 @@ const uint8_t UUID_MODE_VERSION8 = 8;  //  not supported yet
 //
 //  CLASS VERSION
 //
-class UUID : public Printable
+class UUID
 {
 public:
   //  seeds the UUID instance with compile time constants
   //  plus the micros() value as run time component
   //  to be fairly random for every instance.
-  UUID();
+  UUID(unsigned long initialSeed);
 
   //  at least one seed value is mandatory, two is better.
   //  seed can be random or explicitly fixed.
@@ -49,10 +46,7 @@ public:
   void     setRandomMode();
   void     setVersion4Mode();
   //  void     setVersion8Mode(uint8_t nodeId[6]);
-  int      getMode();
-
-  //  Printable interface
-  size_t   printTo(Print& p) const;
+  uint8_t  getMode();
 
   //  will be removed in 0.3.0
   [[deprecated("Use setVersion4Mode() instead")]]

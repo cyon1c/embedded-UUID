@@ -7,16 +7,15 @@
 //     URL: https://github.com/RobTillaart/UUID
 //          https://en.wikipedia.org/wiki/Universally_unique_identifier
 
-
 #include "UUID.h"
 
 
-UUID::UUID()
+UUID::UUID(unsigned long initialSeed)
 {
   //  seed - differs per construction on compile time constants
   //         and multiplication with micros().
   //  TODO investigate how to differ better at runtime.
-  uint32_t s2 = _hash(__TIME__) * micros();
+  uint32_t s2 = _hash(__TIME__) * initialSeed;
   uint32_t s1 = s2 ^ _hash(__DATE__);
            s2 = s2 ^ _hash(__FILE__);
   seed(s1, s2);
@@ -108,7 +107,7 @@ char * UUID::toCharArray()
 //
 //  MODE
 //
-int UUID::getMode()
+uint8_t UUID::getMode()
 {
   return _mode;
 }
@@ -134,16 +133,6 @@ void UUID::setVersion4Mode()
 void UUID::setVariant4Mode()
 {
   _mode = UUID_MODE_VERSION4;
-}
-
-
-//////////////////////////////////////////////////
-//
-//  PRINTING
-//
-size_t UUID::printTo(Print& p) const
-{
-  return p.print(_buffer);
 }
 
 
